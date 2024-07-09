@@ -1,25 +1,35 @@
 package question1;
 
+import java.security.Key;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public class UserInputValidation {
 
+    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static String username = "samuel";
+    private static String email = "samuelkunle215@gmail.com";
+    private static String password = "Akin0MOlafe!";
+    private static LocalDate dateOfBirth = LocalDate.of(1999, 12, 3);
+
     public static void main(String[] args) {
-        String username = "user";
-        String email = "user@example.com";
-        String password = "Passw0rd!";
-        LocalDate dateOfBirth = LocalDate.of(2000, 1, 1);
 
         List<String> validationErrors = validateInput(username, email, password, dateOfBirth);
         if (validationErrors.isEmpty()) {
-            System.out.println("All validations passed");
+            String token = generateToken(username);
+            System.out.println(token);
+            System.out.println(verifyToken(token));
         } else {
             validationErrors.forEach(System.out::println);
         }
@@ -65,5 +75,23 @@ public class UserInputValidation {
             errors.add("Date of Birth: must be at least 16 years old.");
         }
         return errors;
+    }
+
+    public static String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
+                .signWith(key)
+                .compact();
+    }
+
+    public static String verifyToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return "verification pass";
+        } catch (Exception e) {
+            return "verification fails";
+        }
     }
 }

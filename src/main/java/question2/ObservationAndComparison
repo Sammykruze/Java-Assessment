@@ -1,0 +1,14 @@
+
+COMPARISON
+
+Non-concurrent version is simpler and easier to implement. All operators are performed sequentially.
+ Also adequate for scenarios where user actions do not overlap.
+
+Concurrent version allows realistic simulation of concurrent user actions, it is more complex due to synchronization
+requirement.
+
+OBSERVATION
+In a non-concurrent version, the lack of concurrency ensure simplicity but does not reflect real-time concurrent user actions.
+The concurrent version, while more complex, better simulates a real-world scenario where multiple users interact
+with the system simultaneously. It ensures data higher-level concurrency utilities are not used.
+

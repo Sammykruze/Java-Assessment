@@ -1,19 +1,22 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static question1.UserInputValidation.generateToken;
+import static question1.UserInputValidation.verifyToken;
+
 import org.junit.jupiter.api.Test;
-import question1.JwtUtil;
+
 
 public class JwtUtilTest {
 
     @Test
     public void testValidToken() {
-        String token = JwtUtil.generateToken("user");
-        assertEquals("verification pass", JwtUtil.verifyToken(token));
+        String token = generateToken("samuel");
+        assertEquals("verification pass", verifyToken(token));
     }
 
     @Test
     public void testInvalidToken() {
         String token = "invalidToken";
-        assertEquals("verification fails", JwtUtil.verifyToken(token));
+        assertEquals("verification fails", verifyToken(token));
     }
 }
 
